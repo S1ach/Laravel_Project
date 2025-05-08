@@ -20,10 +20,10 @@
       @foreach($articles as $article)
       <tr>
         <th scope="row">{{ $article['date'] ?? ' ' }}</th>
-        <td>{{ $article['name'] ?? ' ' }}</td>
+        <td><a href="/galery/{{$article['number']}}">{{ $article['name'] ?? ' ' }}</a></td>
         <td>{{ $article['shortDesc'] ?? ' ' }}</td>
         <td>{{ $article['desc'] ?? ' ' }}</td>
-        <td><a href="/galery/{{$article['full_image']}}"><img src="{{URL::asset('/images/'.$article['preview_image']) ?? ' ' }}" alt="" height='200' width='250'></a></td>
+        <td><a href="/galery/{{$article['number']}}"><img src="{{URL::asset('/images/'.$article['preview_image']) ?? ' ' }}" alt="" height='200' width='250'></a></td>
       </tr>
       @endforeach
   </tbody>

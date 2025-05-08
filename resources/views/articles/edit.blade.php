@@ -1,7 +1,6 @@
 @extends('layout')
 @section('content')
 
-
     <form action="/article/{{$article->id}}" method="post">
         @csrf
         @method('PUT')
@@ -21,11 +20,13 @@
             <label for="desc">Описание</label>
             <textarea name="desc" class="form-control" id="desc">{{$article->desc}}</textarea>
         </div>
-        <button type="submit" class="btn btn-primary" style="margin-top: 20px" >Обновить</button>
-        <form action="{{ route('article.destroy', $article->id) }}" method="post" >
-              @csrf
-              @method('DELETE')
-              <button class="btn btn-danger" type="submit" style="margin-top: 20px">Удалить</button>
-        </form>
+        <button type="submit" class="btn btn-primary" style="margin-top: 20px">Обновить</button>
     </form>
+
+    <form action="{{ route('article.destroy', $article->id) }}" method="post" style="margin-top: 20px">
+        @csrf
+        @method('DELETE')
+        <button class="btn btn-danger" type="submit" style="padding: 5px 18px 5px 18px;">Удалить</button>
+    </form>
+
 @endsection

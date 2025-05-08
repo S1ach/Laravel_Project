@@ -15,9 +15,10 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::latest()->paginate(10);
+        $articles = Article::with('user')->latest()->paginate(10);
         return view('articles/show', ['articles' => $articles]);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -32,21 +33,22 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'datePublic' => 'required|date',
             'title' => 'required|string|max:255',
             'shortDesc' => 'required|string|max:255',
             'desc' => 'required|string',
         ]);
-    
-        $article = new Article();
-        $article->datePublic = $request->datePublic;
-        $article->title = $request->title;
-        $article->shortDesc = $request->shortDesc;
-        $article->desc = $request->desc;
-        $result = $article->save();
-        if ($result) Mail::send(new ArticleMail($article));
-        return redirect(route('article.index'));
+
+        $data['user_id'] = auth()->id(); 
+
+        $article = Article::create($data); 
+
+        if ($article) {
+            Mail::send(new ArticleMail($article));
+        }
+
+        return redirect(route('article.index'))->with('status', 'Статья успешно создана!');
     }
 
     /**

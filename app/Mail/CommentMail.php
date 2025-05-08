@@ -8,20 +8,20 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Address;
 use App\Models\Article;
+use App\Models\Comment;
 
-
-class ArticleMail extends Mailable
+class CommentMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    protected $article;
-    public function __construct(Article $article)
+    public function __construct(public Comment $comment, public Article $article)
     {
-        $this->article=$article;
+        
     }
 
     /**
@@ -30,21 +30,9 @@ class ArticleMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Создана новая статья: ' . strtoupper($this->article->title),
+            from: new Address("sarp2014timur@mail.ru", env("MAIL_FROM_NAME")),
+            subject: 'Comment Mail',
         );
-    }
-
-    /**
-     * Создать сообщение.
-     *
-     * @return $this
-     */
-    public function build()
-    {
-        return $this->from(env('MAIL_USERNAME'))
-                    ->to('sarp2014timur@mail.ru')
-                    ->with('article', $this->article)
-                    ->view('mail.article');
     }
 
     /**
@@ -53,9 +41,11 @@ class ArticleMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mail.article', 
-            with: [
-                'article' => $this->article,
+            markdown: 'mail.shipped',
+            with:[
+                'comment'=>$this->comment,
+                'article'=>$this->article,
+                'url'=>'http://127.0.0.1:3000/article/'.$this->article->id,
             ]
         );
     }
