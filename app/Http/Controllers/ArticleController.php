@@ -6,6 +6,7 @@ use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ArticleMail;
+use App\Models\Comment;
 use App\Jobs\VeryLongJob;
 
 class ArticleController extends Controller
@@ -97,5 +98,13 @@ class ArticleController extends Controller
         $article->delete();
         return redirect(route('article.index'))
             ->with('status', 'Статья успешно удалена!');
+    }
+
+    public function comment($id)
+    {
+        $article = Article::findOrFail($id);
+        $comments = $article->comments; // или другой способ получить комментарии
+
+        return view('articles.comment', compact('article', 'comments'));
     }
 }

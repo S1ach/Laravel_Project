@@ -10,13 +10,21 @@
       <th scope="col">Короткое описание</th>
       <th scope="col">Описание</th>
       <th scope="col">Автор</th>
-      <th scope="col"> </th>
     </tr>
   </thead>
   <tbody>
       @foreach($articles as $article)
       <tr>
-        <th>@can('article')<a href="{{ route('article.edit', $article->id) }}">@endcan{{ $article->title ?? ' ' }}@can('article')</a>@endcan</th>
+        <th>
+            <div>
+                    <a href="{{ url('article/' . $article->id . '/comment') }}">{{ $article->title ?? ' ' }}</a>
+            </div>
+            @can('article')
+                <div>
+                    <a href="{{ route('article.edit', $article->id) }}">Изменить</a>
+                </div>
+            @endcan
+        </th>
         <th scope="row">{{ $article->datePublic  ?? ' ' }}</th>
         <td>{{ $article->shortDesc  ?? ' ' }}</td>
         <td>{{ $article->desc  ?? ' ' }}</td>

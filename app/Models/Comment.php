@@ -13,4 +13,9 @@ class Comment extends Model
         return belongsTo(Article::class);
 
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

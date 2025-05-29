@@ -13,6 +13,7 @@ use App\Http\Controllers\PageController;
 
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,9 +36,23 @@ Route::get('/auth/login', [AuthController::class, 'login'])->name('login');
 Route::post('/auth/signIn', [AuthController::class, 'customLogin']);
 Route::get('/auth/logout', [AuthController::class, 'logout']);
 
-#Article Comment
-Route::get('/comments/{comment}/edit', [CommentController::class, 'edit'])->name('comment.edit');
-Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
+// Комментарии — создание, редактирование и удаление
+Route::controller(CommentController::class)
+    ->middleware('auth:sanctum')
+    ->prefix('/comments')
+    ->group(function () {
+        Route::post('', 'store');
+        Route::get('/{comment}/edit', 'edit');
+        Route::put('/{comment}', 'update');
+        Route::get('/{comment}/delete', 'delete');
+    });
+
+// Комментарии к статье — просмотр
+Route::controller(CommentController::class)
+    ->prefix('/article')
+    ->group(function () {
+        Route::get('/{id}/comment', 'showForArticle')->name('article.comment');
+    });
 
 
 Route::get('/', [MainController::class, 'index']);
@@ -61,12 +76,3 @@ Route::get('/contact', function(){
     return view('main/contact', ['contact' => $contact]);
 });
 
-//Сomments
-Route::controller(CommentController::class)->middleware('auth:sanctum')->prefix('/comments')
-        ->group(function(){
-            Route::post('', 'store');
-            Route::get('/{comment}/edit','edit');
-            Route::post('/{comment}','update');
-            Route::get('/{comment}/delete','delete');
-        }
-);

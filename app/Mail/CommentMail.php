@@ -45,7 +45,7 @@ class CommentMail extends Mailable
             with:[
                 'comment'=>$this->comment,
                 'article'=>$this->article,
-                'url'=>'http://127.0.0.1:3000/article/'.$this->article->id,
+                'url' => 'http://127.0.0.1:8001/article/' . $this->article->id . '/comment',
             ]
         );
     }
