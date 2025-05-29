@@ -17,10 +17,11 @@ class ArticleFactory extends Factory
     public function definition(): array
     {
         return [
-            'datePublic'=>$this->faker->date(),
-            'title'=>$this->faker->word(),
-            'shortDesc'=>$this->faker->sentence(),
-            'desc'=>$this->faker->text(),
+            'datePublic' => $this->faker->date(),
+            'title' => $this->faker->word(),
+            'shortDesc' => $this->faker->sentence(),
+            'desc' => $this->faker->text(),
+            'user_id' => User::inRandomOrder()->first()?->id ?? User::factory(),
         ];
     }
 }

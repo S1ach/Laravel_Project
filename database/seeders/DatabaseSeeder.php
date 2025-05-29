@@ -13,11 +13,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
-        $this->call([
-            CommentSeeder::class,
-        ]);
         Article::factory(10)->create();
+        $this->call([
+            UserSeeder::class,
+        ]);
     }
 
     

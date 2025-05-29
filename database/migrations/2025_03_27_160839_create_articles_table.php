@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('title')->nullable();
             $table->string('shortDesc');
             $table->string('desc')->nullable();
+            $table->string('user_id')->nullable();
             $table->timestamps();
         });
     }
