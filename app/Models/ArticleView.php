@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class ArticleView extends Model
 {
     use HasFactory;
+    protected $fillable = ['url', 'ip'];
 }

@@ -14,6 +14,7 @@ use App\Http\Controllers\PageController;
 
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,6 +28,8 @@ use App\Http\Controllers\PageController;
 Route::resource('article', ArticleController::class)->middleware('auth:sanctum');
 Route::resource('article', ArticleController::class);
 
+Route::get('/articles/{id}', [ArticleController::class, 'show'])
+    ->middleware('log.article.view');
 
 
 //Auth
@@ -50,9 +53,11 @@ Route::controller(CommentController::class)
 // Комментарии к статье — просмотр
 Route::controller(CommentController::class)
     ->prefix('/article')
+    ->middleware('log.article.view')
     ->group(function () {
         Route::get('/{id}/comment', 'showForArticle')->name('article.comment');
     });
+
 
 
 Route::get('/', [MainController::class, 'index']);
